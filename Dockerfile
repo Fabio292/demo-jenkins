@@ -1,11 +1,2 @@
-FROM node:12
-
-COPY app/ /usr/src/app
-
-WORKDIR /usr/src/app
-
-RUN npm install
-
-EXPOSE 80
-
-ENTRYPOINT [ "npm", "start" ]
+FROM tomcat:8.0-jre8-alpine
+CMD ["catalina.sh", "run"]

@@ -1,0 +1,27 @@
+
+pipeline {
+ agent any
+ stages {
+   stage('Checkout') {
+     steps {
+       git 'https://github.com/Fabio292/demo-jenkins.git'
+     }
+   }
+   stage('Docker build') {
+     steps {
+       script {
+         docker.build('fabio-demo-jenkins:latest')
+       }
+ 
+     }
+   }
+   stage('ECR push') {
+     steps {
+       script {
+         docker.withRegistry('102212442704.dkr.ecr.eu-north-1.amazonaws.com', 'eu-north-1') {
+           docker.image('fabio-demo-jenkins:latest').push()}
+         }
+ 
+       }
+     }
+}

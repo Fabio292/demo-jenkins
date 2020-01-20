@@ -1,27 +1,41 @@
-
 pipeline {
- agent any
- stages {
-   stage('Checkout') {
-     steps {
-       git 'https://github.com/Fabio292/demo-jenkins.git'
-     }
-   }
-   stage('Docker build') {
-     steps {
-       script {
-         docker.build('fabio-demo-jenkins:latest')
-       }
- 
-     }
-   }
-   stage('ECR push') {
-     steps {
-       script {
-         docker.withRegistry('102212442704.dkr.ecr.eu-north-1.amazonaws.com', 'eu-north-1') {
-           docker.image('fabio-demo-jenkins:latest').push()}
-         }
- 
-       }
-     }
+    agent any
+    environment {
+        registry = '102212442704.dkr.ecr.eu-north-1.amazonaws.com/fabio-demo-jenkins:latest'
+    }
+    stages {
+        stage("Checkout") {
+            steps {
+                    git branch: 'master',
+                        credentialsId: 'github',
+                        url: 'https://github.com/Fabio292/demo-jenkins.git'
+               }
+        }
+        stage("Docker Build") {
+            steps {
+                sh "docker build -t fabio-demo-jenkins:latest ."
+            }
+        }
+        stage("ECR Login") {
+            steps {
+                withAWS(credentials:'aws-credential') {
+                    script {
+                        def login = ecrLogin()
+                        sh "${login}"
+                    }
+                }
+            }
+        }
+        stage("Docker Push") {
+            steps {
+                sh "docker push ${registry}"
+            }
+        }
+    }
+    post {
+        success {
+            echo 'ending'
+            build job: 'TestJob-CD'
+        }
+    }
 }

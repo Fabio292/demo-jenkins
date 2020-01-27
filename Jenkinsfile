@@ -38,7 +38,6 @@ pipeline {
 
             }
           }
-        }
         environment {
           IMAGETAG = 'tomcat'
           HIGH = '1'

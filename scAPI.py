@@ -34,7 +34,7 @@ def requestScan():
         "registry": "https://089058466443.dkr.ecr.eu-north-1.amazonaws.com",
         "repository": "fabio-demo",
         "tag": imagetag+'-'+buildid,
-        "credentials": {"aws": {"region": "<region>"}}},
+        "credentials": {"aws": {"region": "eu-north-1"}}},
        
         
     try:

@@ -38,6 +38,16 @@ pipeline {
             }
           }
         }
+     environment {
+        
+          HIGH = '1'
+          MEDIUM = '5'
+          LOW = '5'
+          NEGLIGIBLE = '5'
+          UNKNOWN = '5'
+          USER = administrator  
+          PASSWORD = ba1c887e584fe15c3e209f07076b14
+        }
      
     }
     

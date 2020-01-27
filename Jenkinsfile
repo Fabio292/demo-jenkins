@@ -38,7 +38,7 @@ pipeline {
 
             }
           }
-        environment {
+       environment {
           IMAGETAG = 'tomcat'
           HIGH = '1'
           MEDIUM = '5'
@@ -48,6 +48,5 @@ pipeline {
           USER = administrator
           PASSWORD = ba1c887e584fe15c3e209f07076b14
         }
-    }
+  }
     
-}

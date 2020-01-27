@@ -26,26 +26,22 @@ pipeline {
     stage('Smartcheck') {
         steps {
           script {
-            $FLAG = sh([ script: 'python /home/scAPI.py', returnStdout: true ]).trim()
-            if ($FLAG != '1') {
-              sh 'docker tag 089058466443.dkr.ecr.eu-north-1.amazonaws.com fabio-demo>'
-              docker.withRegistry('https://089058466443.dkr.ecr.eu-north-1.amazonaws.com', 'ecr:eu-north-1:AWS cred') {
-                docker.image('089058466443.dkr.ecr.eu-north-1.amazonaws.com/fabio-demo').push('app-java')}
-              }
-                sh 'docker rmi $(docker images -q) -f 2> /dev/null'
+              smartcheckScan([
+              imageName: "089058466443.dkr.ecr.eu-north-1.amazonaws.com/fabio-demo/app-java",
+              smartcheckHost: "a53bcb22c40af11eaacb70ae5ec6da6f-1483260547.us-east-1.elb.amazonaws.com",
+              smartcheckCredentialsId: "SC cred",
+              imagePullAuth: new groovy.json.JsonBuilder([
+                   aws: {
+				            "region": "eu-north-1",
+				            "accessKeyID": "AKIARJPCMLKFVWRA7F45",
+				            "secretAccessKey": "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",
+				            },
+                   ]).toString(),
+             ])
               }
 
             }
           }
-       environment {
-          IMAGETAG = 'tomcat'
-          HIGH = '1'
-          MEDIUM = '5'
-          LOW = '5'
-          NEGLIGIBLE = '5'
-          UNKNOWN = '5'
-          USER = administrator
-          PASSWORD = ba1c887e584fe15c3e209f07076b14
-        }
+
   }
     

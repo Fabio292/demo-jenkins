@@ -15,7 +15,7 @@ user=os.environ.get("USER")
 password=os.environ.get("PASSWORD")
 
 def requestToken():
-    url = "<your_smartcheck_url>/api/sessions"
+    url = "a53bcb22c40af11eaacb70ae5ec6da6f-1483260547.us-east-1.elb.amazonaws.com/api/sessions"
     headers = {'Content-Type': 'application/json'}
     data = {'user': {'userID': user, 'password': password}}
 
@@ -28,11 +28,11 @@ def requestToken():
     return response.json()['token']
 
 def requestScan():
-    url = "<your_smartcheck_url>/api/scans"
+    url = "a53bcb22c40af11eaacb70ae5ec6da6f-1483260547.us-east-1.elb.amazonaws.com/api/scans"
     data = {"source": {
         "type": "docker",
-        "registry": "<https://your.ecr.domain.amazonws.com>",
-        "repository": "<your_smartcheck_ecr_name>",
+        "registry": "https://089058466443.dkr.ecr.eu-north-1.amazonaws.com",
+        "repository": "fabio-demo",
         "tag": imagetag+'-'+buildid,
         "credentials": {"aws": {"region": "<region>"}}},
        
@@ -49,7 +49,7 @@ def requestReport():
     high, medium, low, negligible, unknown = 0, 0, 0, 0, 0
     status='pending'
 
-    url = "<your_smartcheck_url>/api/scans/"
+    url = "a53bcb22c40af11eaacb70ae5ec6da6f-1483260547.us-east-1.elb.amazonaws.com/api/scans/"
     headers = {'Authorization': 'Bearer'+requestToken()}
     querystring = {"id": requestScan(),"expand":"none"}
 

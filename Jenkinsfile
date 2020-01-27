@@ -19,7 +19,7 @@ pipeline {
       steps {
         script {
           docker.withRegistry('https://089058466443.dkr.ecr.eu-north-1.amazonaws.com', 'ecr:eu-north-1:AWS cred') {
-            docker.image('089058466443.dkr.ecr.eu-north-1.amazonaws.com/fabio-demo').push('test')}
+            docker.image('089058466443.dkr.ecr.eu-north-1.amazonaws.com/fabio-demo').push('app-java')}
           }
 
         }

@@ -1,3 +1,11 @@
-FROM tomcat:8.0-jre8-alphine
-ADD sample.war /usr/local/tomcat/webapps/
-CMD ["catalina.sh", "run"]
+FROM node:12
+
+COPY app/ /usr/src/app
+
+WORKDIR /usr/src/app
+
+RUN npm install
+
+EXPOSE 80
+
+ENTRYPOINT [ "npm", "start" ]

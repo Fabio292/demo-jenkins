@@ -11,28 +11,30 @@ pipeline {
         script {
           docker.build('fabio-demo')
         }
-
+    
       }
     }
     stage('ECR push') {
       steps {
         script {
-          docker.withRegistry('<https://089058466443.dkr.ecr.eu-north-1.amazonaws.com', 'ecr:eu-north-1:<credential_id>') {
-            docker.image('089058466443.dkr.ecr.eu-north-1.amazonaws.com/fabio-demo').push(test)}
+          docker.withRegistry('https://089058466443.dkr.ecr.eu-north-1.amazonaws.com', 'ecr:eu-north-1:AWS cred') {
+            docker.image('089058466443.dkr.ecr.eu-north-1.amazonaws.com/fabio-demo').push('test')}
           }
 
         }
       }
-
-        }
-        environment {
-          IMAGETAG = 'tomcat'
-          HIGH = '1'
-          MEDIUM = '5'
-          LOW = '5'
-          NEGLIGIBLE = '5'
-          UNKNOWN = '5'
-          USER = administrator	
-          PASSWORD = <smartcheck_password>
+      stage('Smart Check scan') {
+        steps {
+            script {
+                smartcheckScan([
+                imageName: "089058466443.dkr.ecr.eu-north-1.amazonaws.com/fabio-demo/test",
+                smartcheckHost: "a53bcb22c40af11eaacb70ae5ec6da6f-1483260547.us-east-1.elb.amazonaws.com",
+                insecureSkipRegistryTLSVerify: true,
+                smartcheckCredentialsId: "SC cred",
+                
+            ])
+            }
         }
       }
+
+}
